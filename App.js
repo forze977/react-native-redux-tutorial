@@ -11,12 +11,14 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from './src/screen/home';
 import SecondScreen from './src/screen/second';
-import reducer from './src/store/reducer';
 
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
-const store = createStore(reducer);
+import configureStore from './src/store/store';
+import { PersistGate } from 'redux-persist/integration/react';
+
+const {store, persister} = configureStore();
+
 
 const RootStack = createStackNavigator({
   Home: HomeScreen,
@@ -30,7 +32,9 @@ export default class App extends React.PureComponent {
   render(){
     return(
       <Provider store={store}>
+        <PersistGate persistor={persister}>
         <Container/>
+        </PersistGate>
       </Provider>
     )
   }
